@@ -43,13 +43,12 @@ class PostReceiveHandler(webapp.RequestHandler):
         message = "*" + pusher + "*" + " a push sur " + repo_url + " !\n"
         
         for commit in commits:
+            
             message = message + Util.shorten(commit['url']) + ': '+ commit['message'] + '\n'
-        
-        for commit in commits:
+                
             for added in commit['added']:
                 message = message + "+ " + added + '\n'
                 
-        for commit in commits:  
             for deleted in commit['removed']:
                 message = message + "- " + deleted + '\n'
                 

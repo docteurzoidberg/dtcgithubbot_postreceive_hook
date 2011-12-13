@@ -1,0 +1,35 @@
+XMPP (Gtalk/Jabber) Bot for Github's post-receive hooks
+-------------------------------------------------------------
+
+Google App Engine autonomous application that handle Github's post-receive hooks JSON data and notify people who suscribed to the bot over XMPP (Gtalk/Jabber) 
+
+Written in Python atm but can be rewritten in Java in few minutes (Thanks Google App Engine framework !)
+
+
+Build & Install:
+---------------
+
+0) Set up a Google App Engine account and create an empty application.
+1) Download Google App engine SDK, and the bot sourcecode.
+2) Go to the root folder of the bot (not src/)
+
+cd bot/
+
+3) Upload the application code on GAE by doing:
+
+/path/to/gae/sdk/appcfg.py src/
+
+(will ask your google app engine username / password first time)
+
+
+
+
+Usage:
+------
+
+Upon the bot is uploaded to GAE, it respond to the address %applicationname%@appspot.com
+
+1) Add the bot to your contactlist (%applicationname%@appspot.com)
+2) Say him "!unmute" to receive notifications about repository pushs
+3) Say him "!mute" to not receive further notification about repository pushs
+

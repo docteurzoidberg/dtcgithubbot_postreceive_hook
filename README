@@ -29,6 +29,11 @@ Usage:
 
 Upon the bot is uploaded to GAE, it respond to the address %applicationname%@appspot.com
 
+
+0) Add the bot url to github's repos you want to monitor (in repository=>admin=>web hooks=>http post-receive)
+
+Url of the post-receive handler is http://%applicationname%.appspot.com/post-receive
+
 1) Add the bot to your contactlist (%applicationname%@appspot.com)
 2) Say him "!unmute" to receive notifications about repository pushs
 3) Say him "!mute" to not receive further notification about repository pushs

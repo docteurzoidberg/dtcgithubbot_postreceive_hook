@@ -1,0 +1,6 @@
+indexes:
+- kind: commits
+  properties:
+  - name: RepoName
+  - name: Timestamp
+    direction: desc

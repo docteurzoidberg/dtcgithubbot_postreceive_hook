@@ -10,5 +10,9 @@ handlers:
   script: XmppHandler.py
 - url: /post-receive
   script: PostReceiveHandler.py
+- url: /post-receive/.*
+  script: PostReceiveHandler.py
+- url: /changelog/.*
+  script: ChangeLogHandler.py
 builtins:
 - datastore_admin: on

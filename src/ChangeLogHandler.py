@@ -28,7 +28,7 @@ class ChangeLogHandler(webapp.RequestHandler):
         
         for commit in commits:
             
-            self.response.out.write(commit.Timestamp + "; " + commit.Message + "\r\n")
+            self.response.out.write(commit.Timestamp + "; " + commit.Message.replace('\n',' ').replace('\r','') + "\r\n")
         
        
                 

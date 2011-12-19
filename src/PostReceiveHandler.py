@@ -13,6 +13,14 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 class PostReceiveHandler(webapp.RequestHandler):
     
+    def log_post_data(self, body):
+        
+        #DEBUG: log json data "as is", create new db entry
+        db_log_payload = db.github_in()
+        db_log_payload.When = datetime.datetime.now()
+        db_log_payload.Body = body
+        db_log_payload.put()
+     
     def handle_github_json(self, project, githubjson):
 
         repo_name = githubjson['repository']['name']
@@ -52,19 +60,14 @@ class PostReceiveHandler(webapp.RequestHandler):
             for deleted in commit['removed']:
                 message = message + "- " + deleted + '\n'
        
-            
-        
-        
-        
-        #get developpers and send them a xmpp notification
-        devs = db.developpers.gql("WHERE Active = True")        
+        #get subscribers and send them a xmpp notification
+        subscribtions = db.subscribtions.gql("WHERE Enabled = True AND RepoName = :1", repo_name)        
 
-        # Recupere le mail de chaque developpeur "actif"
-        for dev in devs:
-            xmpp.send_message(dev.Mail, message)
+        #prepare JIDs to send notification on
+        for subscribtion in subscribtions:
+            xmpp.send_message(subscribtion.Mail, message)
         
-    
-        
+       
     def post(self):        
         
         
@@ -79,31 +82,15 @@ class PostReceiveHandler(webapp.RequestHandler):
         #github's payload is stored in a post variable called "payload"
         githubpayload = self.request.get('payload')
         
-        
-        #DEBUG: log json data "as is", create new db entry
-        db_log_payload = db.github_in()
-        db_log_payload.When = datetime.datetime.now()
-        db_log_payload.Body = githubpayload
-        db_log_payload.put()
-        
-        
-        
-        # Charge le JSON envoye par github
+        #log data
+        self.log_post_data(githubpayload)
+
+        #parse json
         githubjson = json.loads(githubpayload)
         
+        #do stuff with json data
         self.handle_github_json(projectid, githubjson)
-        
-        
-       
                 
-
-    
-       
-   
-            
-    
-
-        
 
 application = webapp.WSGIApplication([('/post-receive', PostReceiveHandler),('/post-receive/.*', PostReceiveHandler)], debug=False)
 

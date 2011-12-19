@@ -1,8 +1,9 @@
 from google.appengine.ext import db
 
-class developpers(db.Model):
-    Mail = db.StringProperty(required=True)
-    Active = db.BooleanProperty(False)
+class subscribtions(db.Model):
+    Mail = db.StringProperty(required=True) 
+    RepoName = db.StringProperty(required=True)
+    Enabled = db.BooleanProperty(False)
     
 class xmpp_in(db.Model):
     From = db.StringProperty(required=True)
@@ -26,4 +27,38 @@ class commits(db.Model):
     CommiterMail = db.StringProperty()
     CommitUrl = db.StringProperty()
     CommitShortenUrl = db.StringProperty()
+
+
+def delete_subscribtion(email,repo):
+        
+    subscribtion = subscribtions.get_or_insert(email+"/"+repo, Mail=email, RepoName=repo)
+    subscribtion.delete()
+  
+def delete_subscribtions(email):
+        
+    for subscribtion in subscribtions.gql("WHERE Mail = :1", email):            
+        subscribtion.delete()
+
+def disable_subscriptions(email):
+        
+    for suscribtion in subscribtions.gql("WHERE Mail = :1", email):            
+        suscribtion.Enabled = False
+        suscribtion.put()
+
+def disable_subscription(email, repo):
     
+    subscribtion = subscribtions.get_or_insert(email+"/"+repo, Mail=email, RepoName=repo)
+    subscribtion.Enabled = False
+    subscribtion.put()
+
+def enable_subscriptions(email):
+    
+    for subscribtion in subscribtions.gql("WHERE Mail = :1", email):            
+        subscribtion.Enabled = True
+        subscribtion.put()
+
+def enable_subscription( email, repo):
+    
+    subscribtion = subscribtions.get_or_insert(email+"/"+repo, Mail=email,RepoName=repo)
+    subscribtion.Enabled = True
+    subscribtion.put()
